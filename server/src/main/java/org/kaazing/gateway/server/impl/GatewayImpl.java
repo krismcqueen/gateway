@@ -447,4 +447,19 @@ final class GatewayImpl implements Gateway {
             }
         }
     }
+
+    @Override
+    public String[] listServices() {
+        return gateway.listServices();
+    }
+
+    @Override
+    public void startService(String name) {
+        gateway.startService(name);
+    }
+
+    @Override
+    public void stopService(String name) {
+        gateway.stopService(name);
+    }
 }

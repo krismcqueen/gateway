@@ -1031,6 +1031,15 @@ public class DefaultServiceContext implements ServiceContext {
     }
 
     @Override
+    public String state() {
+        if (started.get()) {
+            return "running";
+        } else {
+            return "stopped";
+        }
+    }
+
+    @Override
     public void destroy() throws Exception {
         getService().destroy();
     }

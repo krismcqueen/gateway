@@ -21,10 +21,13 @@
 
 package org.kaazing.gateway.server;
 
+import static java.lang.String.format;
+
 import java.net.URI;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
+
 import org.kaazing.gateway.server.context.GatewayContext;
 import org.kaazing.gateway.service.AcceptOptionsContext;
 import org.kaazing.gateway.service.ServiceContext;
@@ -149,6 +152,51 @@ public class Launcher {
         }
         LOGGER.info("Stopped server successfully in " + String.format("%1$.3f secs", (stoppedAt - stopAt) / 1000f)
                 + " at " + String.format("%1$tF %1$tT", stopAt));
+    }
+
+    public String[] listServices() {
+        Collection<? extends ServiceContext> services = context.getServices();
+        String[] serviceListings = new String[services.size()];
+        int index = 0;
+        for (ServiceContext service : services) {
+            String name = service.getServiceName();
+            String type = service.getServiceType();
+            String status = service.state();
+            serviceListings[index++] = format("%s:%s:%s", name, type, status);
+        }
+        return serviceListings;
+    }
+
+    public void startService(String name) {
+        if (name != null) {
+            Collection<? extends ServiceContext> services = context.getServices();
+            for (ServiceContext service : services) {
+                if (name.equals(service.getServiceName())) {
+                    try {
+                        service.start();
+                    } catch (Exception ex) {
+                        LOGGER.error("Failed to start service " + name, ex);
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
+    public void stopService(String name) {
+        if (name != null) {
+            Collection<? extends ServiceContext> services = context.getServices();
+            for (ServiceContext service : services) {
+                if (name.equals(service.getServiceName())) {
+                    try {
+                        service.stop();
+                    } catch (Exception ex) {
+                        LOGGER.error("Failed to stop service " + name, ex);
+                    }
+                    return;
+                }
+            }
+        }
     }
 
     public static Logger getGatewayStartupLogger() {

@@ -179,4 +179,24 @@ public interface Gateway {
      *                   underneath the Gateway unexpectedly.
      */
     void destroy() throws Exception;
+
+    /**
+     * List the services in a running Gateway.
+     * @return an array of Strings in the format name:type:state that represent the name of the service and its type
+     */
+    String[] listServices();
+
+    /**
+     * Start the service with the given name.  If the service is already running, this is a no-op.  If no service
+     * matches the given name, no action is taken.
+     * @param name the name of the service to start
+     */
+    void startService(String name);
+
+    /**
+     * Stop the service with the given name.  If the service is already stopped, this is a no-op.  If no service
+     * matches the given name, no action is taken.
+     * @param name the name of the service to stop
+     */
+    void stopService(String name);
 }

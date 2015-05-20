@@ -73,6 +73,7 @@ public class TestServiceContext implements ServiceContext {
     private final URI acceptURI;
     private final URI connectURI;
     private final ServiceProperties serviceProperties;
+    private boolean running = false;
 
     public TestServiceContext(Service service, String name, URI acceptURI, URI connectURI) {
         this.service = service;
@@ -177,6 +178,7 @@ public class TestServiceContext implements ServiceContext {
     @Override
     public void start() throws Exception {
         service.start();
+        running = true;
     }
 
     @Override
@@ -224,6 +226,7 @@ public class TestServiceContext implements ServiceContext {
     @Override
     public void stop() throws Exception {
         service.stop();
+        running = false;
     }
 
     @Override
@@ -495,5 +498,14 @@ public class TestServiceContext implements ServiceContext {
     @Override
     public void setSessionInitializor(IoSessionInitializer<ConnectFuture> ioSessionInitializer) {
         // TODO Not used in tests
+    }
+
+    @Override
+    public String state() {
+        if (running) {
+            return "running";
+        } else {
+            return "stopped";
+        }
     }
 }

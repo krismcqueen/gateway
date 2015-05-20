@@ -162,4 +162,9 @@ public interface ServiceContext {
 
     void setSessionInitializor(IoSessionInitializer<ConnectFuture> ioSessionInitializer);
 
+    /**
+     * The current state of the service, either "running" or "stopped"
+     * @return the current state of the service, either "running" or "stopped"
+     */
+    String state();
 }
